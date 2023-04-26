@@ -4,7 +4,6 @@ export const fetchProduct = async (productID) => {
   }
   const response = await fetch(`https://api.mercadolibre.com/items/${productID}`);
   return response.json();
-  // return data;
 };
 
 export const fetchProductsList = async (item) => {
