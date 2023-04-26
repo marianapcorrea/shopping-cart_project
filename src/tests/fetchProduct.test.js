@@ -20,7 +20,6 @@ describe('Teste a função fetchProduct', () => {
     expect(fetchProduct('MLB1405519561')).resolves.toBe(product);
   });
   it('Chamar fetchProduct() retorna erro:Termo de busca não informado', async () => {
-    // const promise = ;
     await expect(fetchProduct()).rejects.toThrow('ID não informado');
   });
 });
