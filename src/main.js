@@ -24,8 +24,6 @@ const createErrorElement = () => {
 
 const populateProductSection = async (product) => {
   try {
-    const test = await fetchProduct('MLB1405519561');
-    console.log(test);
     const result = await fetchProductsList(product);
     result.map((item) => products.appendChild(createProductElement(item)));
   } catch {
