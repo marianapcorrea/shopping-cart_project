@@ -14,14 +14,27 @@ const addLoadingText = () => {
 
 const removeLoadingText = () => document.querySelector('.loading').remove();
 
+const createErrorElement = () => {
+  const error = ('Algum erro ocorreu, recarregue a página e tente novamente');
+  const errorEl = document.createElement('h3');
+  errorEl.className = 'error';
+  errorEl.innerText = error;
+  products.appendChild((errorEl));
+};
+
 const populateProductSection = async (product) => {
-  const result = await fetchProductsList(product);
-  result.map((item) => products.appendChild(createProductElement(item)));
-  removeLoadingText();
+  try {
+    const result = await fetchProductsList(product);
+    result.map((item) => products.appendChild(createProductElement(item)));
+  } catch {
+    createErrorElement();
+  } finally {
+    removeLoadingText();
+  }
 };
 
 window.onload = () => {
   addLoadingText();
-  populateProductSection('computador');
+  populateProductSection('computer');
   document.querySelector('.cep-button').addEventListener('click', searchCep);
 };
