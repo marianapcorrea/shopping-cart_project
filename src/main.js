@@ -1,5 +1,5 @@
 import { searchCep } from './helpers/cepFunctions';
-import { fetchProductsList } from './helpers/fetchFunctions';
+import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
 import { createProductElement } from './helpers/shopFunctions';
 import './style.css';
 
@@ -24,6 +24,8 @@ const createErrorElement = () => {
 
 const populateProductSection = async (product) => {
   try {
+    const test = await fetchProduct('MLB1405519561');
+    console.log(test);
     const result = await fetchProductsList(product);
     result.map((item) => products.appendChild(createProductElement(item)));
   } catch {

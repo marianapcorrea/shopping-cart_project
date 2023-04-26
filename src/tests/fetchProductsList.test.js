@@ -19,8 +19,9 @@ describe('Teste a função fetchProductsList', () => {
     expect(fetch).toHaveBeenCalledWith(endpoint);
   });
 
-  it('O retorno de "fetchProductsList(computador)" === "computadorSearch"', () => {
-    expect(fetchProductsList('computador')).resolves.toBe(computadorSearch);
+  it('O retorno de "fetchProductsList(computador)" === "computadorSearch"', async () => {
+    const data = await fetchProductsList('computador');
+    expect(data).toEqual(computadorSearch);
   });
 
   it('Chamar fetchProductsList() retorna erro:Termo de busca não informado', async () => {
