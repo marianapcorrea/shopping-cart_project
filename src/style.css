@@ -95,6 +95,7 @@
   color: rgb(57, 63, 71);
   font-size: 12px;
   margin-top: 8px;
+  padding-top: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 4;

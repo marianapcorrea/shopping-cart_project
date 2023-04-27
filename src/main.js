@@ -53,7 +53,7 @@ const populateProductSection = async (product) => {
   }
 };
 
-const restoreCartData = async () => {
+const restoreCartData = () => {
   getSavedCartIDs().forEach((id) => populatesCart(id));
 };
 
