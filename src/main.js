@@ -36,10 +36,8 @@ const getTargetId = async (e) => {
   populatesCart(targetId);
 };
 
-const startAddEvent = () => {
-  const addBtn = document.querySelectorAll('.product__add');
-  addBtn.forEach((btn) => btn.addEventListener('click', getTargetId));
-};
+const startAddEvent = () => document.querySelectorAll('.product__add')
+  .forEach((btn) => btn.addEventListener('click', getTargetId));
 
 const populateProductSection = async (product) => {
   try {
@@ -53,9 +51,7 @@ const populateProductSection = async (product) => {
   }
 };
 
-const restoreCartData = () => {
-  getSavedCartIDs().forEach((id) => populatesCart(id));
-};
+const restoreCartData = () => getSavedCartIDs().forEach((id) => populatesCart(id));
 
 window.onload = () => {
   addLoadingText();
