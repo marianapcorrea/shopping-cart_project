@@ -1,9 +1,10 @@
 import { searchCep } from './helpers/cepFunctions';
-import { fetchProductsList } from './helpers/fetchFunctions';
-import { createProductElement } from './helpers/shopFunctions';
+import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
+import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
 import './style.css';
 
 const products = document.querySelector('.products');
+const cartProducts = document.querySelector('.cart__products');
 
 const addLoadingText = () => {
   const loading = document.createElement('p');
@@ -22,6 +23,18 @@ const createErrorElement = () => {
   products.appendChild((errorEl));
 };
 
+const getTargetId = async (e) => {
+  const targetId = e.target.parentNode.firstChild.innerHTML;
+  const productData = await fetchProduct(targetId);
+  const productElement = createCartProductElement(productData);
+  cartProducts.appendChild(productElement);
+};
+
+const startAddEvent = () => {
+  const addBtn = document.querySelectorAll('.product__add');
+  addBtn.forEach((btn) => btn.addEventListener('click', getTargetId));
+};
+
 const populateProductSection = async (product) => {
   try {
     const result = await fetchProductsList(product);
@@ -30,6 +43,7 @@ const populateProductSection = async (product) => {
     createErrorElement();
   } finally {
     removeLoadingText();
+    startAddEvent();
   }
 };
 
