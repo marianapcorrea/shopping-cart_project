@@ -1,3 +1,4 @@
+import { getSavedCartIDs, saveCartID } from './helpers/cartFunctions';
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
 import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
@@ -23,11 +24,16 @@ const createErrorElement = () => {
   products.appendChild((errorEl));
 };
 
-const getTargetId = async (e) => {
-  const targetId = e.target.parentNode.firstChild.innerHTML;
+const populatesCart = async (targetId) => {
   const productData = await fetchProduct(targetId);
   const productElement = createCartProductElement(productData);
   cartProducts.appendChild(productElement);
+};
+
+const getTargetId = async (e) => {
+  const targetId = e.target.parentNode.firstChild.innerHTML;
+  saveCartID(targetId);
+  populatesCart(targetId);
 };
 
 const startAddEvent = () => {
@@ -47,8 +53,13 @@ const populateProductSection = async (product) => {
   }
 };
 
+const restoreCartData = async () => {
+  getSavedCartIDs().forEach((id) => populatesCart(id));
+};
+
 window.onload = () => {
   addLoadingText();
   populateProductSection('computer');
+  restoreCartData();
   document.querySelector('.cep-button').addEventListener('click', searchCep);
 };
