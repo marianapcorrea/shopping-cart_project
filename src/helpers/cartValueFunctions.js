@@ -1,26 +1,25 @@
-const updateSavedValue = (value) => {
-  localStorage.setItem('value', JSON.stringify(value));
-};
+const totalPrice = document.querySelector('.total-price');
 
-const getSavedValue = () => {
-  const price = localStorage.getItem('value');
-  return price ? JSON.parse(price) : 0;
-};
+const checkValue = () => {
+  const arr = [];
 
-export const recoverValueOnLoad = () => {
-  document.querySelector('.total-price').innerHTML = getSavedValue();
+  document.querySelectorAll('.cart .product__price__value')
+    .forEach((value) => arr.push(Number(value.innerHTML)));
+  return arr.reduce((acc, newValue) => acc + newValue, 0).toFixed(2);
 };
 
 export const addNewValue = (e) => {
   const newValue = e.target.previousSibling.lastChild.innerHTML;
-  const totalPrice = document.querySelector('.total-price');
   const revisedValue = Number(totalPrice.innerHTML) + Number(newValue);
-  updateSavedValue(revisedValue);
   totalPrice.innerHTML = revisedValue.toFixed(2);
 };
 
-export const removeValue = (id) => {
-  const targetValue = id;
-  // e.target.previousSibling.lastChild.innerHTML;
-  console.log(targetValue);
+export const removeValue = (e) => {
+  const targetValue = e.target.previousSibling.lastChild.lastChild.innerHTML;
+  const revisedValue = Number(totalPrice.innerHTML) - Number(targetValue);
+  totalPrice.innerHTML = revisedValue.toFixed(2);
+};
+
+export const recoverValueOnLoad = () => {
+  totalPrice.innerHTML = checkValue();
 };

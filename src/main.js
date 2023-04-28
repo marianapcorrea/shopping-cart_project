@@ -1,5 +1,6 @@
 import { getSavedCartIDs, saveCartID } from './helpers/cartFunctions';
-import { addNewValue, recoverValueOnLoad } from './helpers/cartValueFunctions';
+import { addNewValue, recoverValueOnLoad, removeValue }
+  from './helpers/cartValueFunctions';
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
 import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
@@ -25,11 +26,15 @@ const createErrorElement = () => {
   products.appendChild((errorEl));
 };
 
+const getRemoveBtnClick = () => document.querySelectorAll('.cart__product__remove')
+  .forEach((btn) => btn.addEventListener('click', removeValue));
+
 const populatesCart = async (targetId) => {
   const productData = await fetchProduct(targetId);
   const productElement = createCartProductElement(productData);
   cartProducts.appendChild(productElement);
   recoverValueOnLoad();
+  getRemoveBtnClick();
 };
 
 const getTargetId = async (e) => {
