@@ -1,6 +1,5 @@
 import { getSavedCartIDs, saveCartID } from './helpers/cartFunctions';
-import { addNewValue, recoverValueOnLoad, removeValue }
-  from './helpers/cartValueFunctions';
+import sumValues from './helpers/cartValueFunctions';
 import { searchCep } from './helpers/cepFunctions';
 import { fetchProduct, fetchProductsList } from './helpers/fetchFunctions';
 import { createCartProductElement, createProductElement } from './helpers/shopFunctions';
@@ -26,15 +25,11 @@ const createErrorElement = () => {
   products.appendChild((errorEl));
 };
 
-const getRemoveBtnClick = () => document.querySelectorAll('.cart__product__remove')
-  .forEach((btn) => btn.addEventListener('click', removeValue));
-
 const populatesCart = async (targetId) => {
   const productData = await fetchProduct(targetId);
   const productElement = createCartProductElement(productData);
   cartProducts.appendChild(productElement);
-  recoverValueOnLoad();
-  getRemoveBtnClick();
+  await sumValues();
 };
 
 const getTargetId = async (e) => {
@@ -43,11 +38,14 @@ const getTargetId = async (e) => {
   populatesCart(targetId);
 };
 
-const startAddEvent = () => document.querySelectorAll('.product__add')
-  .forEach((btn) => {
-    btn.addEventListener('click', getTargetId);
-    btn.addEventListener('click', addNewValue);
-  });
+const startAddEvent = () => {
+  document.querySelectorAll('.product__add')
+    .forEach((addBtn) => {
+      addBtn.addEventListener('click', getTargetId);
+    });
+  document.querySelectorAll('.product__price__value')
+    .forEach(async (rmvBtn) => rmvBtn.addEventListener('click', await sumValues));
+};
 
 const populateProductSection = async (product) => {
   try {
@@ -63,10 +61,10 @@ const populateProductSection = async (product) => {
 
 const restoreCartData = () => getSavedCartIDs().forEach((id) => populatesCart(id));
 
+console.log();
 window.onload = () => {
   addLoadingText();
   populateProductSection('computer');
   restoreCartData();
-  recoverValueOnLoad();
   document.querySelector('.cep-button').addEventListener('click', searchCep);
 };

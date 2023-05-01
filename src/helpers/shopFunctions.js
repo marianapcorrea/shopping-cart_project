@@ -1,4 +1,5 @@
 import { removeCartID } from './cartFunctions';
+import sumValues from './cartValueFunctions';
 
 // Esses comentários que estão antes de cada uma das funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições!
@@ -45,9 +46,10 @@ export const getIdFromProduct = (product) => (
  * @param {Element} li - Elemento do produto a ser removido do carrinho.
  * @param {string} id - ID do produto a ser removido do carrinho.
  */
-const removeCartProduct = (li, id) => {
+const removeCartProduct = async (li, id) => {
   li.remove();
   removeCartID(id);
+  await sumValues();
 };
 
 /**
@@ -87,7 +89,7 @@ export const createCartProductElement = ({ id, title, price, pictures }) => {
   );
   li.appendChild(removeButton);
 
-  li.addEventListener('click', () => removeCartProduct(li, id));
+  li.addEventListener('click', async () => removeCartProduct(li, id));
   return li;
 };
 

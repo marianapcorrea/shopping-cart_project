@@ -1,25 +1,14 @@
-const totalPrice = document.querySelector('.total-price');
+import { getSavedCartIDs } from './cartFunctions';
+import { fetchProduct } from './fetchFunctions';
 
-const checkValue = () => {
-  const arr = [];
+const totalPriceEl = document.querySelector('.total-price');
 
-  document.querySelectorAll('.cart .product__price__value')
-    .forEach((value) => arr.push(Number(value.innerHTML)));
-  return arr.reduce((acc, newValue) => acc + newValue, 0).toFixed(2);
+const recoverProductsValues = async () => Promise.all(getSavedCartIDs()
+  .map(async (id) => fetchProduct(id)));
+
+const sumValues = async () => {
+  const result = await recoverProductsValues();
+  totalPriceEl.innerHTML = result.reduce((acc, { price }) => acc + Number(price), 0);
 };
 
-export const addNewValue = (e) => {
-  const newValue = e.target.previousSibling.lastChild.innerHTML;
-  const revisedValue = Number(totalPrice.innerHTML) + Number(newValue);
-  totalPrice.innerHTML = revisedValue.toFixed(2);
-};
-
-export const removeValue = (e) => {
-  const targetValue = e.target.previousSibling.lastChild.lastChild.innerHTML;
-  const revisedValue = Number(totalPrice.innerHTML) - Number(targetValue);
-  totalPrice.innerHTML = revisedValue.toFixed(2);
-};
-
-export const recoverValueOnLoad = () => {
-  totalPrice.innerHTML = checkValue();
-};
+export default sumValues;
